@@ -69,7 +69,10 @@ class Ai {
         // Pass previous conversation id (if it exists) to ensure conversation continuity.
         const options = this.previousConversationId ? { parentMessageId: this.previousConversationId } : new Object();
         return this.conversationAgent.sendMessage(message, options)
-            .then(response => response.text);
+            .then(response => {
+                this.previousConversationId = response.id;
+                return response.text;
+            };
     }
 
     async getCorrection(language, message) {
@@ -89,8 +92,7 @@ function init() {
         // Set final callback once language is selected.
         chat.setCallback(async message => {
             await ai.getCorrection(language, message).then(correction => chat.addMessage(correction, 'corrector'));
-            const conversationMessage = `Respond to the following in ${language}: ${message}`;
-            ai.getConversation(conversationMessage).then(response => chat.addMessage(response, 'converser'));
+            ai.getConversation(message).then(response => chat.addMessage(response, 'converser'));
         })
     })
 
