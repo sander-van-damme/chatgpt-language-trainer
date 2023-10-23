@@ -89,7 +89,8 @@ function init() {
         // Set final callback once language is selected.
         chat.setCallback(async message => {
             await ai.getCorrection(language, message).then(correction => chat.addMessage(correction, 'corrector'));
-            ai.getConversation(message).then(response => chat.addMessage(response, 'converser'));
+            const conversationMessage = `Respond to the following in ${language}: ${message}`;
+            ai.getConversation(conversationMessage).then(response => chat.addMessage(response, 'converser'));
         })
     })
 
