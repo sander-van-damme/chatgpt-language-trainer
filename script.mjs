@@ -72,7 +72,7 @@ class Ai {
             .then(response => {
                 this.previousConversationId = response.id;
                 return response.text;
-            };
+            });
     }
 
     async getCorrection(language, message) {
