@@ -9,7 +9,8 @@ class Page {
         let apiKey = Cookies.get(Page.apiCookie);
         while (!apiKey || apiKey === 'null') {
             apiKey = window.prompt('OpenAI API key:');
-            Cookies.set(Page.apiCookie, apiKey, { expires: 365, secure: true, sameSite: 'strict' });
+            expiryDate = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 365)
+            Cookies.set(Page.apiCookie, apiKey, { expires: expiryDate, secure: true, sameSite: 'strict' });
         }
         return apiKey;
     }
